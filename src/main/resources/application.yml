@@ -1,0 +1,80 @@
+# Server properties
+server:
+  port: 8101
+
+# Information for the info endpoint
+info:
+  app:
+    environment: DEV
+    name: session-service
+    description: Session Service - Local Instance
+
+# Spring application properties
+spring:
+  application:
+    name: session-service
+  profiles:
+    active: dev
+  config:
+    import:
+      - optional:configserver:${CONFIG_SERVER_URL}
+      - optional:file:./env.properties
+  datasource:
+    url: ${DB_URI}
+    driverClassName: org.postgresql.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+  rabbitmq:
+    host: ${RMQ_HOST}
+    port: ${RMQ_PORT}
+    username: ${RMQ_USERNAME}
+    password: ${RMQ_PASSWORD}
+
+# Eureka configuration
+eureka:
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: ${EUREKA_CLIENT_DEFAULT_ZONE}
+  instance:
+    preferIpAddress: true
+
+# RabbitMQ settings
+rabbitmq:
+  exchange: ${RMQ_EXCHANGE}
+  queues:
+    create-credentials: ${RMQ_CREATE_CREDENTIALS_Q}
+    reset-passcode: ${RMQ_RESET_PASSCODE_Q}
+    delete-user-data: ${RMQ_DELETE_USER_DATA_Q}
+  routing-keys:
+    platform-emails: ${RMQ_PLATFORM_EMAILS_RK}
+    verify-account: ${RMQ_VERIFY_ACCOUNT_RK}
+    create-credentials: ${RMQ_CREATE_CREDENTIALS_RK}
+    reset-passcode: ${RMQ_RESET_PASSCODE_RK}
+    delete-user-data: ${RMQ_DELETE_USER_DATA_RK}
+
+# Management properties
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: info, health, refresh
+
+app:
+  accessTokenSecret: ${ACCESS_TOKEN_SECRET}
+  refreshTokenSecret: ${REFRESH_TOKEN_SECRET}
+
+# Logging properties
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
