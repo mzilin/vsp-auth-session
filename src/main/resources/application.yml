@@ -6,13 +6,13 @@ server:
 info:
   app:
     environment: DEV
-    name: session-service
+    name: ${spring.application.name}
     description: Session Service - Local Instance
 
 # Spring application properties
 spring:
   application:
-    name: session-service
+    name: auth-session
   profiles:
     active: dev
   config:
